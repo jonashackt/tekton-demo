@@ -38,7 +38,7 @@ kubectl cluster-info
 #### 4. Install Flux components with flux bootstrap:
 
  ```sh
-   GITHUB_TOKEN=<token> GITHUB_USER=<username> flux bootstrap github \
+   GITHUB_TOKEN=<token> flux bootstrap github \
    --owner=<username-of-the-repo-owner> \
    --repository=tekton-demo \
    --private=false \
@@ -49,9 +49,21 @@ kubectl cluster-info
    
 #### 5. Check the progress of the deployment
 
+First wait for the Flux CRD deployment
+
 ```shell
-kubectl get Kustomization -n flux-system -w
+kubectl -n default wait --for condition=established --timeout=180s crd/kustomizations.kustomize.toolkit.fluxcd.io
 ```
+
+Now wait for the Kustomizations to be ready:
+
+```shell
+kubectl -n flux-system wait --for=condition=READY=True --timeout=60s kustomizations.kustomize.toolkit.fluxcd.io/flux-system \
+kustomizations.kustomize.toolkit.fluxcd.io/tekton-base \
+kustomizations.kustomize.toolkit.fluxcd.io/tekton-tasks \
+kustomizations.kustomize.toolkit.fluxcd.io/tekton-ci-config
+```
+
 
 #### 6.(optional) Connect to the Tekton Dashboard
 
