@@ -83,3 +83,14 @@ tkn pipeline list
 ```
 
 Create a pipeline run as follows and issue it via `kubectl create -f hello-goodbye-pipeline-run.yaml`. This command will return the created pipelinerun which you need for reference later. E.g. enter `tkn pr logs $PIPELINE_RUN_NAME` to get the log output of the pipeline.
+
+
+# Using the repo yourself
+
+For now in order to run all commands locally you need to fork the repository (otherwise the flux bootstrap doesn't work, since it will not have enough permissions - see https://github.com/marcopaga/tekton-demo/issues/11).
+
+After forking, create a GitHub repository secret called `FLUX_GITHUB_TOKEN` containing your PAT (you need to create one as stated above):
+
+![flux-github-token-repo-secret](screenshots/flux-github-token-repo-secret.png)
+
+Also remember to actively activate GitHub Actions for your fork.
